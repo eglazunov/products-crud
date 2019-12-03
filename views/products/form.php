@@ -40,7 +40,7 @@
                 <input type="text"
                        class="form-control"
                        name="attributes[<?php echo $attribute->id; ?>][value]"
-                       value="">
+                       value="<?php echo isset($product) ? $product->attributeValue($attribute) : '' ?>">
             </div>
         </div>
     </div>

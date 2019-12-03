@@ -56,10 +56,11 @@ class ProductsController
     }
 
     /**
-     * Store product
+     * Store product by request
      *
      * @param Request $request
      * @return RedirectResponse
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
@@ -68,14 +69,33 @@ class ProductsController
         return new RedirectResponse("/products");
     }
 
+    /**
+     * Returns form for editing product
+     *
+     * @param int $id
+     * @return View
+     */
     public function edit(int $id)
     {
-        // TODO
+        $product = $this->productRepository->getById($id);
+        $attributes = $this->attributeRepository->getAll();
+
+        return new View('products/edit', compact('product', 'attributes'));
     }
 
+    /**
+     * Update product by given id and request
+     *
+     * @param int $id
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws \Throwable
+     */
     public function update(int $id, Request $request)
     {
-        // TODO
+        $this->productRepository->update($id, $request->all());
+
+        return new RedirectResponse("/products");
     }
 
     public function destroy(int $id)

@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 
 $router->get('/', function () {
-    return 'hello world!';
+    return new \Illuminate\Http\RedirectResponse('/products');
 });
 
 $router->group(['namespace' => 'App\Controllers'], function (Router $router) {

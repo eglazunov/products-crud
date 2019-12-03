@@ -23,14 +23,39 @@ class DbProductRepository implements ProductRepository
         $this->model = $model;
     }
 
+    /**
+     * Returns created product
+     *
+     * @param array $request
+     * @return Product
+     * @throws \Throwable
+     */
     public function create(array $request): Product
     {
         return Capsule::connection()->transaction(function () use ($request) {
             /** @var Product $product */
             $product = $this->model->create($request);
-            $product->attributes()->sync($request['attributes'] ?? []);
+            $product->productAttributes()->sync($request['attributes'] ?? []);
 
             return $product;
+        });
+    }
+
+    /**
+     * Returns true if product success updated
+     *
+     * @param int $id
+     * @param array $request
+     * @return bool
+     * @throws \Throwable
+     */
+    public function update(int $id, array $request): bool
+    {
+        return Capsule::connection()->transaction(function () use ($id, $request) {
+            $product = $this->getById($id);
+            $product->productAttributes()->sync($request['attributes'] ?? []);
+
+            return $product->update($request);
         });
     }
 
