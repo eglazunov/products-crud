@@ -28,7 +28,9 @@ class ProductsController
      */
     public function index(Request $request)
     {
-        return new View('products/index');
+        $products = $this->productRepository->getAll();
+
+        return new View('products/index', compact('products'));
     }
 
     public function create()
