@@ -7,6 +7,12 @@ require __DIR__.'/../database.php';
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+
+/*
+|--------------------------------------------------------------------------
+| PRODUCTS
+|--------------------------------------------------------------------------
+*/
 Capsule::schema()->dropIfExists('products');
 
 Capsule::schema()->create('products', function (Blueprint $table) {
@@ -18,3 +24,24 @@ Capsule::schema()->create('products', function (Blueprint $table) {
     $table->timestamps();
 
 });
+
+Capsule::table('products')->insert([
+    [
+        'title' => 'T-shirt #1',
+        'price' => 15,
+    ],
+    [
+        'title' => 'T-shirt #2',
+        'price' => 20,
+    ],
+    [
+        'title' => 'T-shirt #3',
+        'price' => 23,
+    ],
+]);
+
+/*
+|--------------------------------------------------------------------------
+| ATTRIBUTES
+|--------------------------------------------------------------------------
+*/

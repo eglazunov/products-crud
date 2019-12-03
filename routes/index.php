@@ -7,5 +7,5 @@ $router->get('/', function () {
 });
 
 $router->group(['namespace' => 'App\Controllers'], function (Router $router) {
-    $router->get('products', ['name' => 'products.index', 'uses' => 'ProductsController@index']);
+    $router->resource('products', 'ProductsController');
 });

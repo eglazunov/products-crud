@@ -23,19 +23,25 @@ class ProductsController
     }
 
     /**
-     * @param Request $request
+     * Returns list of products
+     *
      * @return View
      */
-    public function index(Request $request)
+    public function index()
     {
         $products = $this->productRepository->getAll();
 
         return new View('products/index', compact('products'));
     }
 
+    /**
+     * Returns form for creating product
+     *
+     * @return View
+     */
     public function create()
     {
-        // TODO
+        return new View('products/create');
     }
 
     public function store(Request $request)
