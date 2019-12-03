@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Product;
 
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class DbProductRepository implements ProductRepository
 {
@@ -20,6 +21,17 @@ class DbProductRepository implements ProductRepository
     public function __construct(Product $model)
     {
         $this->model = $model;
+    }
+
+    public function create(array $request): Product
+    {
+        return Capsule::connection()->transaction(function () use ($request) {
+            /** @var Product $product */
+            $product = $this->model->create($request);
+            $product->attributes()->sync($request['attributes'] ?? []);
+
+            return $product;
+        });
     }
 
     /**

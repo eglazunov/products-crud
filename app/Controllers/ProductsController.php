@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use App\System\View;
 use Illuminate\Http\Request;
-use App\Repositories\ProductRepository;
+use Illuminate\Http\RedirectResponse;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\Attribute\AttributeRepository;
 
 class ProductsController
 {
@@ -14,12 +16,19 @@ class ProductsController
     private $productRepository;
 
     /**
+     * @var AttributeRepository
+     */
+    private $attributeRepository;
+
+    /**
      * ProductsController constructor.
      * @param ProductRepository $productRepository
+     * @param AttributeRepository $attributeRepository
      */
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, AttributeRepository $attributeRepository)
     {
         $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -41,12 +50,22 @@ class ProductsController
      */
     public function create()
     {
-        return new View('products/create');
+        $attributes = $this->attributeRepository->getAll();
+
+        return new View('products/create', compact('attributes'));
     }
 
+    /**
+     * Store product
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function store(Request $request)
     {
-        // TODO
+        $this->productRepository->create($request->all());
+
+        return new RedirectResponse("/products");
     }
 
     public function edit(int $id)

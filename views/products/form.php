@@ -32,6 +32,20 @@
 </div>
 <hr>
 
+<?php foreach($attributes as $attribute): ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label><?php echo $attribute->title; ?></label>
+                <input type="text"
+                       class="form-control"
+                       name="attributes[<?php echo $attribute->id; ?>][value]"
+                       value="">
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+
 <div class="row">
     <div class="col-md-12">
         <button type="submit" class="btn btn-success">

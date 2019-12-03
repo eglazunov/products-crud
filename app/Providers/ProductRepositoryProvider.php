@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 
-use App\Repositories\ProductRepository;
-use App\Repositories\DbProductRepository;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\DbProductRepository;
 
 class ProductRepositoryProvider extends Provider
 {
