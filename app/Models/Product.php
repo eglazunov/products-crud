@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -14,4 +15,19 @@ class Product extends Model
         'price',
         'description',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * Returns attributes relation
+     *
+     * @return BelongsToMany
+     */
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class)->withPivot('value');
+    }
 }

@@ -45,3 +45,91 @@ Capsule::table('products')->insert([
 | ATTRIBUTES
 |--------------------------------------------------------------------------
 */
+Capsule::schema()->dropIfExists('attributes');
+
+Capsule::schema()->create('attributes', function (Blueprint $table) {
+
+    $table->increments('id');
+    $table->string('title');
+
+});
+
+Capsule::table('attributes')->insert([
+    [
+        'title' => 'Size',
+    ],
+    [
+        'title' => 'Color',
+    ],
+    [
+        'title' => 'Material',
+    ],
+]);
+
+/*
+|--------------------------------------------------------------------------
+| PIVOT
+|--------------------------------------------------------------------------
+*/
+Capsule::schema()->dropIfExists('attribute_product');
+
+Capsule::schema()->create('attribute_product', function (Blueprint $table) {
+
+    $table->increments('id');
+    $table->unsignedInteger('product_id');
+    $table->unsignedInteger('attribute_id');
+    $table->string('value');
+
+    $table->unique(['product_id', 'attribute_id']);
+
+});
+
+Capsule::table('attribute_product')->insert([
+    [
+        'product_id' => 1,
+        'attribute_id' => 1,
+        'value' => 'S',
+    ],
+    [
+        'product_id' => 1,
+        'attribute_id' => 2,
+        'value' => 'White',
+    ],
+    [
+        'product_id' => 1,
+        'attribute_id' => 3,
+        'value' => 'Cotton 100%',
+    ],
+
+    [
+        'product_id' => 2,
+        'attribute_id' => 1,
+        'value' => 'M',
+    ],
+    [
+        'product_id' => 2,
+        'attribute_id' => 2,
+        'value' => 'Black',
+    ],
+    [
+        'product_id' => 2,
+        'attribute_id' => 3,
+        'value' => 'Synthetics',
+    ],
+
+    [
+        'product_id' => 3,
+        'attribute_id' => 1,
+        'value' => 'L',
+    ],
+    [
+        'product_id' => 3,
+        'attribute_id' => 2,
+        'value' => 'Yellow',
+    ],
+    [
+        'product_id' => 3,
+        'attribute_id' => 3,
+        'value' => 'Polyester',
+    ],
+]);
