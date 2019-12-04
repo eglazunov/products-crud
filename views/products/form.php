@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <label>Title*</label>
         <div class="form-group">
-            <input type="text" required
+            <input type="text"
                    name="title"
                    class="form-control"
                    value="<?php echo $product->title ?? '' ?>">
@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <label>Price* ($)</label>
         <div class="form-group">
-            <input type="number" required
+            <input type="number"
                    step="0.1"
                    name="price"
                    class="form-control"
