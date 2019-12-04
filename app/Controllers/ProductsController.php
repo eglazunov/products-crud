@@ -125,6 +125,8 @@ class ProductsController
      */
     public function destroy(int $id): JsonResponse
     {
+        $this->productRepository->delete($id);
+
         return new JsonResponse([], 200);
     }
 

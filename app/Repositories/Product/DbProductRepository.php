@@ -60,6 +60,18 @@ class DbProductRepository implements ProductRepository
     }
 
     /**
+     * Delete product by given id
+     *
+     * @param int $id
+     */
+    public function delete(int $id): void
+    {
+        $this->model->newQuery()
+            ->where('id', $id)
+            ->delete();
+    }
+
+    /**
      * @return Collection
      */
     public function getAll(): Collection

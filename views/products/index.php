@@ -28,7 +28,8 @@
                             <a href="<?php echo "/products/{$product->id}/edit" ?>" class="btn btn-sm btn-default">
                                 Edit
                             </a>
-                            <button class="btn btn-sm  btn-danger">
+                            <button class="btn btn-sm btn-danger js-delete-product"
+                                    data-product-id="<?php echo $product->id ?>">
                                 Delete
                             </button>
                         </td>

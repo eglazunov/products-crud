@@ -28,6 +28,13 @@ interface ProductRepository
     public function update(int $id, array $request): bool;
 
     /**
+     * Delete product by given id
+     *
+     * @param int $id
+     */
+    public function delete(int $id): void;
+
+    /**
      * @return Collection
      */
     public function getAll(): Collection;
