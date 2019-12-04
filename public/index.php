@@ -16,6 +16,7 @@ error_reporting(E_ALL);
 require_once '../vendor/autoload.php';
 require_once '../database.php';
 
+session_start();
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;

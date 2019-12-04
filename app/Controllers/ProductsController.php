@@ -4,12 +4,19 @@ namespace App\Controllers;
 
 use App\System\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Validation\Factory as Validation;
 use App\Repositories\Attribute\AttributeRepository;
 
 class ProductsController
 {
+    /**
+     * @var Validation
+     */
+    private $validation;
+
     /**
      * @var ProductRepository
      */
@@ -22,11 +29,17 @@ class ProductsController
 
     /**
      * ProductsController constructor.
+     * @param Validation $validation
      * @param ProductRepository $productRepository
      * @param AttributeRepository $attributeRepository
      */
-    public function __construct(ProductRepository $productRepository, AttributeRepository $attributeRepository)
+    public function __construct(
+        Validation $validation,
+        ProductRepository $productRepository,
+        AttributeRepository $attributeRepository
+    )
     {
+        $this->validation = $validation;
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
     }
@@ -36,7 +49,7 @@ class ProductsController
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $products = $this->productRepository->getAll();
 
@@ -48,7 +61,7 @@ class ProductsController
      *
      * @return View
      */
-    public function create()
+    public function create(): View
     {
         $attributes = $this->attributeRepository->getAll();
 
@@ -62,11 +75,15 @@ class ProductsController
      * @return RedirectResponse
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $this->productRepository->create($request->all());
+        if (!$this->validate($request)) {
+            return new RedirectResponse("/products/create");
+        }
 
-        return new RedirectResponse("/products");
+        $product = $this->productRepository->create($request->all());
+
+        return new RedirectResponse("/products/{$product->id}/edit");
     }
 
     /**
@@ -75,7 +92,7 @@ class ProductsController
      * @param int $id
      * @return View
      */
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $product = $this->productRepository->getById($id);
         $attributes = $this->attributeRepository->getAll();
@@ -91,16 +108,47 @@ class ProductsController
      * @return RedirectResponse
      * @throws \Throwable
      */
-    public function update(int $id, Request $request)
+    public function update(int $id, Request $request): RedirectResponse
     {
+        if (!$this->validate($request)) {
+            return new RedirectResponse("/products/{$id}/edit");
+        }
+
         $this->productRepository->update($id, $request->all());
 
-        return new RedirectResponse("/products");
+        return new RedirectResponse("/products/{$id}/edit");
     }
 
-    public function destroy(int $id)
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
-        // TODO
+        return new JsonResponse([], 200);
     }
 
+    /**
+     * Returns true if request is valid
+     *
+     * @param Request $request
+     * @return bool
+     */
+    private function validate(Request $request): bool
+    {
+        $validator = $this->validation->make($request->all(), [
+            'price' => 'numeric',
+            'title' => 'required',
+            'attributes' => 'array',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            $_SESSION["errors"] = $validator->errors()->toArray();
+        } else {
+            $_SESSION["success"] = 'Success saved!';
+        }
+
+        return !$validator->fails();
+    }
 }

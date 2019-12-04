@@ -8,3 +8,5 @@
         </ul>
     </div>
 </nav>
+
+<?php include(__DIR__.'/../layouts/notifications.php') ?>
