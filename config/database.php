@@ -3,7 +3,7 @@
 return [
     'host' => 'mysql',
     'driver' => 'mysql',
-    'database' => 'php_example',
+    'database' => 'products_crud',
     'username' => 'root',
     'password' => 'root',
 ];
